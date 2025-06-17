@@ -1,31 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import DownloadPage from './pages/DownloadPage';
+
 
 function App() {
   return (
-      <Form>
-        <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
-          <Form.Label column sm="2">
-            Email
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control plaintext readOnly defaultValue="email@example.com" />
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
-          <Form.Label column sm="2">
-            Password
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control type="password" placeholder="Password" />
-          </Col>
-        </Form.Group>
-      </Form>
+      <Router>
+          <Routes>
+              <Route path="/" element={<LoginPage />}></Route>
+              <Route path="/download" element={<DownloadPage/>}></Route>
+          </Routes>
+      </Router>
   );
 }
 
