@@ -1,14 +1,20 @@
-import React, {useState} from "react";
 import CustomNavbar from "../components/Navbar";
 import Form from "../components/LoginForm";
-import axios from "axios";
-import {useNavigate} from "react-router-dom";
+
 
 const LoginPage = () => {
     return (
         <div>
             <CustomNavbar/>
-            <div style={{margin: "250px auto"}}>
+            <div style={{margin: "400px auto"}}>
+                <h1
+                    style={{
+                        position: "absolute",
+                        left: "47%",
+                        top: "30%"
+                    }}>
+                    Login
+                </h1>
                 <Form/>
             </div>
         </div>

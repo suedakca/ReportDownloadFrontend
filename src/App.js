@@ -1,18 +1,85 @@
-import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import DownloadPage from './pages/DownloadPage';
+import React, {useEffect, useState} from "react";
+import {Routes, Route, Navigate, useNavigate} from "react-router-dom";
+import DownloadPage from "./pages/DownloadPage";
+import LoginPage from "./pages/LoginPage";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import PrivateRoute from "./components/PrivateRoute";
+import {useDispatch, useSelector} from "react-redux";
+import RegisterPage from "./pages/RegisterPage";
+import {logout} from "./features/auth/authSlice";
 
 
 function App() {
-  return (
-      <Router>
-          <Routes>
-              <Route path="/" element={<LoginPage />}></Route>
-              <Route path="/download" element={<DownloadPage/>}></Route>
-          </Routes>
-      </Router>
-  );
+    const token = useSelector((state) => state.auth.token);
+    const username = useSelector((state) => state.auth.username);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [isChecking, setIsChecking] = useState(false);
+
+    useEffect(() => {
+        if (isChecking) return;
+        if(!token || !username) {
+            if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
+                console.log('Token veya kullanıcı bulunamadı, login sayfasına yönlendiriliyor.');
+                navigate('/');
+            }
+        }
+        setIsChecking(true);
+        fetch(`/auth/check?token=${encodeURIComponent(token)}&username=${encodeURIComponent(username)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Sunucu hatası: ' + response.status);
+                }
+                return response.text();
+            })
+            .then(text => {
+                const isValid = text === 'true';
+                if(!isValid) {
+                    console.log('Token geçersiz veya kullanıcı bulunamadı. Logout yapılıyor...');
+                    dispatch(logout());
+                    navigate('/');
+                }
+            })
+            .catch(error => {
+                console.error('Hata oluştu: ', error);
+                dispatch({type: 'logout'});
+                navigate("/");
+            })
+    }, [token, username, navigate, dispatch, isChecking]);
+    return (
+        <div>
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        token ? <Navigate to="/download" replace /> : <LoginPage />
+                    }
+                />
+                <Route
+                    path="/"
+                    element={
+                        token ? <Navigate to="/download" replace /> : <LoginPage />
+                    }
+                />
+
+                <Route
+                    path="/download"
+                    element={
+                        <PrivateRoute>
+                            <DownloadPage />
+                        </PrivateRoute>
+                    }
+                />
+
+                <Route path="/register"
+                       element={
+                    <RegisterPage/>
+                       }
+                />
+
+            </Routes>
+        </div>
+    );
 }
 
 export default App;

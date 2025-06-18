@@ -1,44 +1,42 @@
-import Form from "react-bootstrap/Form";
+import {Button, Stack} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
+import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
-import { Button, Stack } from "react-bootstrap";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setCredentials } from "../features/auth/authSlice";
+import {useState} from "react";
 import axios from "../api/axios";
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {setCredentials} from "../features/auth/authSlice";
 
-function LoginForm() {
+function RegisterForm () {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleLogin = async (e) => {
+    const handleRegister = async (e)  => {
         e.preventDefault();
         try {
-            const response = await axios.post("/auth/login", {
+            const response = await axios.post('/auth/register',{
                 username,
                 password
             });
 
-            console.log("Giriş başarılı:", response.data);
+            console.log("Kayıt başarılı");
 
             dispatch(setCredentials({
                 token: response.data.token,
                 username: response.data.username
             }));
-
             navigate("/download");
-        } catch (error) {
-            console.error("Giriş hatası:", error);
-        }
-    };
+        } catch (e) {
 
+        }
+    }
     return (
         <Stack gap={2} className="col-md-5 mx-auto">
             <Row>
-                <Form onSubmit={handleLogin}  style ={{
+                <Form onSubmit={handleRegister} style ={{
                     position: "absolute",
                     width: "500px",
                     left: "35%"
@@ -70,11 +68,12 @@ function LoginForm() {
                         position: "absolute",
                         top: "110%",
                         left: "48%"
-                    }}>Login</Button>
+                    }}>Register</Button>
                 </Form>
             </Row>
         </Stack>
-    );
+
+    )
 }
 
-export default LoginForm;
+export default RegisterForm;
