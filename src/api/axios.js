@@ -1,4 +1,5 @@
 import axios from "axios";
+import {decryptData} from "../features/utils/encryptData";
 
 const instance = axios.create({
     baseURL: "http://localhost:8080", // backend URL
@@ -6,7 +7,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem("token");
+        const token = decryptData(localStorage.getItem("token"));
         if (token) {
             config.headers["Authorization"] = `Bearer ${token}`;
         }

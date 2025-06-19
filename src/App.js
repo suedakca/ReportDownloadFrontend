@@ -6,7 +6,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import PrivateRoute from "./components/PrivateRoute";
 import {useDispatch, useSelector} from "react-redux";
 import RegisterPage from "./pages/RegisterPage";
-import {logout} from "./features/auth/authSlice";
 
 
 function App() {
@@ -19,7 +18,7 @@ function App() {
     useEffect(() => {
         if (isChecking) return;
         if(!token || !username) {
-            if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
+            if (window.location.pathname !== '/' && window.location.pathname !== '/register') {
                 console.log('Token veya kullanıcı bulunamadı, login sayfasına yönlendiriliyor.');
                 navigate('/');
             }
@@ -36,8 +35,11 @@ function App() {
                 const isValid = text === 'true';
                 if(!isValid) {
                     console.log('Token geçersiz veya kullanıcı bulunamadı. Logout yapılıyor...');
-                    dispatch(logout());
+                    dispatch({type: 'logout'});
                     navigate('/');
+                } else{
+                    console.log('Token geçerli. Redux refresh ediliyor...');
+                    dispatch({type : 'refreshPage'});
                 }
             })
             .catch(error => {
