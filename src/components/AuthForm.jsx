@@ -1,45 +1,48 @@
-import {Button, Stack} from "react-bootstrap";
-import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {useState} from "react";
+import { Button, Stack } from "react-bootstrap";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../features/auth/authSlice";
 import axios from "../api/axios";
-import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {setCredentials} from "../features/auth/authSlice";
 
-function RegisterForm () {
+function AuthForm({ urlPath, pageName }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleRegister = async (e)  => {
+    const handleAuth = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/auth/register',{
+            const response = await axios.post(urlPath, {
                 username,
                 password
             });
 
-            console.log("Kayıt başarılı");
+            console.log(pageName," success: ", response.data);
 
             dispatch(setCredentials({
                 token: response.data.token,
                 username: response.data.username
             }));
-            navigate("/download");
-        } catch (e) {
 
+            navigate("/download");
+        } catch (error) {
+            console.error("Error: ",pageName," ",error);
         }
-    }
+    };
+
     return (
         <Stack gap={2} className="col-md-5 mx-auto">
             <Row>
-                <Form onSubmit={handleRegister} style ={{
+                <Form onSubmit={handleAuth}  style ={{
                     position: "absolute",
                     width: "500px",
-                    left: "35%"
+                    left: "35%",
+                    top: "40%"
                 }}>
                     <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
                         <Form.Label column sm="2">Username</Form.Label>
@@ -67,13 +70,12 @@ function RegisterForm () {
                     <Button type="submit" variant="secondary" style ={{
                         position: "absolute",
                         top: "110%",
-                        left: "48%"
-                    }}>Register</Button>
+                        left: "45%"
+                    }}>{pageName}</Button>
                 </Form>
             </Row>
         </Stack>
-
-    )
+    );
 }
 
-export default RegisterForm;
+export default AuthForm;

@@ -8,11 +8,24 @@ export function encryptData(data) {
 
 export function decryptData(ciphertext) {
     try {
+        if (!ciphertext || typeof ciphertext !== 'string') {
+            console.warn('decryptData: Boş veya geçersiz ciphertext geldi.', ciphertext);
+            return null;
+        }
+
         const bytes = CryptoJS.AES.decrypt(ciphertext, SECRET_KEY);
-        const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+        const decryptedStr = bytes.toString(CryptoJS.enc.Utf8);
+
+        if (!decryptedStr) {
+            console.warn('decryptData: Çözüm başarısız, boş çıktı döndü.', ciphertext);
+            return null;
+        }
+
+        const decryptedData = JSON.parse(decryptedStr);
         return decryptedData;
     } catch (error) {
-        console.error('Çözme hatası:', error);
+        console.error('Çözme hatası:', error, 'ciphertext:', ciphertext);
         return null;
     }
 }
+

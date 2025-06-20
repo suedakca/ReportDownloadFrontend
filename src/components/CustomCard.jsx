@@ -2,6 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import axios from "../api/axios";
 import {useSelector} from "react-redux";
+import {decryptData} from "../features/utils/encryptData";
 
 function CustomCard( { onDownloadResult }) {
     const downloadReport = async (e) => {
@@ -20,6 +21,7 @@ function CustomCard( { onDownloadResult }) {
     }
 
     const username = useSelector((state) => state.auth.username);
+
     return (
         <Card>
             <Card.Header>Download Report</Card.Header>

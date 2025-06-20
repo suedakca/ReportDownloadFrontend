@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {Routes, Route, Navigate, useNavigate} from "react-router-dom";
 import DownloadPage from "./pages/DownloadPage";
-import LoginPage from "./pages/LoginPage";
+import AuthPage from "./pages/AuthPage";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PrivateRoute from "./components/PrivateRoute";
 import {useDispatch, useSelector} from "react-redux";
-import RegisterPage from "./pages/RegisterPage";
+import {decryptData} from "./features/utils/encryptData";
 
 
 function App() {
     const token = useSelector((state) => state.auth.token);
     const username = useSelector((state) => state.auth.username);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [isChecking, setIsChecking] = useState(false);
@@ -21,6 +22,8 @@ function App() {
             if (window.location.pathname !== '/' && window.location.pathname !== '/register') {
                 console.log('Token veya kullanıcı bulunamadı, login sayfasına yönlendiriliyor.');
                 navigate('/');
+            } else{
+                setIsChecking(true); return;
             }
         }
         setIsChecking(true);
@@ -54,16 +57,9 @@ function App() {
                 <Route
                     path="/"
                     element={
-                        token ? <Navigate to="/download" replace /> : <LoginPage />
+                        token ? <Navigate to="/download" replace /> : <AuthPage pageName='Login' />
                     }
                 />
-                <Route
-                    path="/"
-                    element={
-                        token ? <Navigate to="/download" replace /> : <LoginPage />
-                    }
-                />
-
                 <Route
                     path="/download"
                     element={
@@ -75,10 +71,9 @@ function App() {
 
                 <Route path="/register"
                        element={
-                    <RegisterPage/>
+                    <AuthPage pageName='Register'/>
                        }
                 />
-
             </Routes>
         </div>
     );
