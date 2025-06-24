@@ -5,6 +5,10 @@ import Button from "react-bootstrap/Button";
 import {logout} from "../features/auth/authSlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
+import ListTable from "../components/ListTable";
+import axios from "../api/axios";
+import TypeRadioButton from "../components/TypeRadioButton";
+import TitleYearInput from "../components/TitleYearInput";
 
 const DownloadPage = () => {
     const [showToast, setShowToast] = useState(false);
@@ -29,9 +33,34 @@ const DownloadPage = () => {
         navigate("/");
     };
 
+    const downloadReport = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.get("/api/report/homeworks");
+            if(handleDownloadResult()) {
+                handleDownloadResult(true);
+            }
+        }catch (e) {
+            console.log(e);
+            if(handleDownloadResult()){
+                handleDownloadResult(false);
+            }
+        }
+    }
+
     return (
-      <div style={{margin: '350px auto', width: '500px'}}>
-          <CustomCard onDownloadResult={handleDownloadResult}/>
+      <div style={{margin: '100px auto', width: '1050px'}}>
+          <Button onClick={downloadReport} variant="primary" style={{
+              position: 'fixed',
+              top: 70,
+              right: 10,
+              minWidth: "100px"
+          }}>Download Report</Button>
+          <div>
+            <TypeRadioButton/>
+            <TitleYearInput/>
+          </div>
+          <ListTable />
           <Toast
               onClose={() => setShowToast(false)}
               show={showToast}

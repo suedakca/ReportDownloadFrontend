@@ -2,7 +2,6 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import axios from "../api/axios";
 import {useSelector} from "react-redux";
-import {decryptData} from "../features/utils/encryptData";
 
 function CustomCard( { onDownloadResult }) {
     const downloadReport = async (e) => {
