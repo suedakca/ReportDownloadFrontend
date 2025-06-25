@@ -5,7 +5,6 @@ import AuthPage from "./pages/AuthPage";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PrivateRoute from "./components/PrivateRoute";
 import {useDispatch, useSelector} from "react-redux";
-import {decryptData} from "./features/utils/encryptData";
 
 
 function App() {

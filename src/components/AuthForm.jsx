@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../features/auth/authSlice";
-import axios from "../api/axios";
+import {loginApi} from "../api/axios";
 
 function AuthForm({ urlPath, pageName }) {
     const [username, setUsername] = useState("");
@@ -17,7 +17,7 @@ function AuthForm({ urlPath, pageName }) {
     const handleAuth = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(urlPath, {
+            const response = await loginApi.post(urlPath, {
                 username,
                 password
             });

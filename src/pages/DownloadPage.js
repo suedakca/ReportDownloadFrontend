@@ -1,20 +1,18 @@
 import React, {useState} from "react";
-import CustomCard from "../components/CustomCard";
 import Toast from "react-bootstrap/Toast";
 import Button from "react-bootstrap/Button";
 import {logout} from "../features/auth/authSlice";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import ListTable from "../components/ListTable";
-import axios from "../api/axios";
-import TypeRadioButton from "../components/TypeRadioButton";
+import {reportApi} from "../api/axios";
 import TitleYearInput from "../components/TitleYearInput";
 
 const DownloadPage = () => {
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
     const [toastVariant, setToastVariant] = useState("success");
-
+    const [movies, setMovies] = useState([]);
     const handleDownloadResult = (success) => {
         if (success) {
             setToastVariant("success");
@@ -36,13 +34,13 @@ const DownloadPage = () => {
     const downloadReport = async (e) => {
         e.preventDefault();
         try {
-            await axios.get("/api/report/homeworks");
-            if(handleDownloadResult()) {
+            await reportApi.get("/api/report-download");
+            if(handleDownloadResult) {
                 handleDownloadResult(true);
             }
         }catch (e) {
             console.log(e);
-            if(handleDownloadResult()){
+            if(handleDownloadResult){
                 handleDownloadResult(false);
             }
         }
@@ -57,10 +55,9 @@ const DownloadPage = () => {
               minWidth: "100px"
           }}>Download Report</Button>
           <div>
-            <TypeRadioButton/>
-            <TitleYearInput/>
+            <TitleYearInput setMovies={setMovies}/>
           </div>
-          <ListTable />
+          <ListTable movies = {movies}/>
           <Toast
               onClose={() => setShowToast(false)}
               show={showToast}
