@@ -11,16 +11,27 @@ import {loginApi} from "../api/axios";
 function AuthForm({ urlPath, pageName }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [role, setRole] = useState("");
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleAuth = async (e) => {
         e.preventDefault();
         try {
-            const response = await loginApi.post(urlPath, {
-                username,
-                password
-            });
+            let response;
+            if (pageName === 'Login') {
+                response = await loginApi.post(urlPath, {
+                    username,
+                    password
+                });
+            } else {
+                response = await loginApi.post(urlPath, {
+                    username,
+                    password,
+                    role
+                })
+                console.log("ROLE: ", role);
+            }
 
             console.log(pageName," success: ", response.data);
 
@@ -29,7 +40,7 @@ function AuthForm({ urlPath, pageName }) {
                 username: response.data.username
             }));
 
-            navigate("/download");
+            navigate("/homework");
         } catch (error) {
             console.error("Error: ",pageName," ",error);
         }
@@ -67,6 +78,24 @@ function AuthForm({ urlPath, pageName }) {
                             />
                         </Col>
                     </Form.Group>
+                    {pageName === 'Register' && (
+                        <Form.Group as={Row} className="mb-3" controlId="formPlaintextRole">
+                            <Form.Label column sm="2">Role</Form.Label>
+                            <Col sm="10">
+                                <Form.Select
+                                    value={role}
+                                    onChange={(e) => setRole(e.target.value)}
+                                >
+                                    <option value="">Seçiniz</option>
+                                    <option value="USER">Kullanıcı</option>
+                                    <option value="TEACHER">Öğretmen</option>
+                                    <option value="DIRECTOR">Yönetmen</option>
+                                    <option value="ADMIN">Admin</option>
+                                </Form.Select>
+                            </Col>
+                        </Form.Group>
+                    )}
+
                     <Button type="submit" variant="secondary" style ={{
                         position: "absolute",
                         top: "110%",

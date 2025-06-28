@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Routes, Route, Navigate, useNavigate} from "react-router-dom";
-import DownloadPage from "./pages/DownloadPage";
+import MoviePage from "./pages/MoviePage";
 import AuthPage from "./pages/AuthPage";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PrivateRoute from "./components/PrivateRoute";
 import {useDispatch, useSelector} from "react-redux";
+import HomeworkPage from "./pages/HomeworkPage";
 
 
 function App() {
@@ -56,14 +57,22 @@ function App() {
                 <Route
                     path="/"
                     element={
-                        token ? <Navigate to="/download" replace /> : <AuthPage pageName='Login' />
+                        token ? <Navigate to="/homework" replace /> : <AuthPage pageName='Login' />
                     }
                 />
                 <Route
-                    path="/download"
+                    path="/movie"
                     element={
                         <PrivateRoute>
-                            <DownloadPage />
+                            <MoviePage />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/homework"
+                    element={
+                        <PrivateRoute>
+                            <HomeworkPage />
                         </PrivateRoute>
                     }
                 />

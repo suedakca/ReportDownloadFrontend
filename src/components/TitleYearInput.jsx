@@ -3,7 +3,7 @@ import {InputGroup} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import TypeDropdown from "./TypeDropdown";
 import {useState} from "react";
-import {reportApi} from "../api/axios";
+import {movieApi} from "../api/axios";
 
 function TitleYearInput({ setMovies }) {
     const [selectedType, setSelectedType] = useState("");
@@ -21,7 +21,7 @@ function TitleYearInput({ setMovies }) {
 
         console.log("Search Request:", requestBody);
 
-        reportApi.post('/api/search-movie', requestBody)
+        movieApi.post('/api/search-movie', requestBody)
             .then(response => {
                 console.log("Response:", response.data);
                 setMovies(response.data);

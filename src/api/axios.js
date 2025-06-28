@@ -5,10 +5,13 @@ const loginApi = axios.create({
     baseURL: "http://localhost:8080", // backend URL
 });
 
-const reportApi = axios.create({
+const movieApi = axios.create({
     baseURL: "http://localhost:8081"
 });
 
+const homeworkApi = axios.create({
+    baseURL: "http://localhost:8082"
+})
 const addAuthInterceptor = (apiInstance) => {
     apiInstance.interceptors.request.use(
         (config) => {
@@ -25,6 +28,7 @@ const addAuthInterceptor = (apiInstance) => {
 };
 
 addAuthInterceptor(loginApi);
-addAuthInterceptor(reportApi);
+addAuthInterceptor(movieApi);
+addAuthInterceptor(homeworkApi);
 
-export { loginApi, reportApi };
+export { loginApi, movieApi, homeworkApi };

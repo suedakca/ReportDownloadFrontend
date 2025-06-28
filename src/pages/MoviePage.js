@@ -1,14 +1,12 @@
 import React, {useState} from "react";
 import Toast from "react-bootstrap/Toast";
 import Button from "react-bootstrap/Button";
-import {logout} from "../features/auth/authSlice";
-import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
 import ListTable from "../components/ListTable";
-import {reportApi} from "../api/axios";
+import {movieApi} from "../api/axios";
 import TitleYearInput from "../components/TitleYearInput";
+import MenuSidebar from "../components/MenuSidebar";
 
-const DownloadPage = () => {
+const MoviePage = () => {
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
     const [toastVariant, setToastVariant] = useState("success");
@@ -23,18 +21,21 @@ const DownloadPage = () => {
         }
         setShowToast(true);
     };
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        dispatch(logout());
-        navigate("/");
-    };
 
     const downloadReport = async (e) => {
         e.preventDefault();
         try {
-            await reportApi.get("/api/report-download");
+            const response = await movieApi.get("/api/report-download" , {
+                responseType: 'blob',
+            });
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "movie.xlsx");
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
             if(handleDownloadResult) {
                 handleDownloadResult(true);
             }
@@ -48,6 +49,8 @@ const DownloadPage = () => {
 
     return (
       <div style={{margin: '100px auto', width: '1050px'}}>
+          <MenuSidebar/>
+
           <Button onClick={downloadReport} variant="primary" style={{
               position: 'fixed',
               top: 70,
@@ -57,7 +60,7 @@ const DownloadPage = () => {
           <div>
             <TitleYearInput setMovies={setMovies}/>
           </div>
-          <ListTable movies = {movies}/>
+          <ListTable type='movie' movies={movies}/>
           <Toast
               onClose={() => setShowToast(false)}
               show={showToast}
@@ -73,17 +76,9 @@ const DownloadPage = () => {
           >
               <Toast.Body>{toastMessage}</Toast.Body>
           </Toast>
-          <Button  variant="secondary"
-                   onClick={handleLogout}
-                   style={{
-              position: 'fixed',
-              top: 20,
-              right: 10,
-              minWidth: "100px"
-          }}>Logout</Button>
 
       </div>
     );
 }
 
-export default DownloadPage;
+export default MoviePage;
