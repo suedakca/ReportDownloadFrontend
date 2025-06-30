@@ -4,6 +4,9 @@ import Button from "react-bootstrap/Button";
 import ListTable from "../components/ListTable";
 import {homeworkApi} from "../api/axios";
 import MenuSidebar from "../components/MenuSidebar";
+import CustomNavbar from "../components/Navbar";
+import {decryptData} from "../features/utils/encryptData";
+import {jwtDecode} from "jwt-decode";
 
 const HomeworkPage = () => {
     const [showToast, setShowToast] = useState(false);
@@ -44,16 +47,25 @@ const HomeworkPage = () => {
             }
         }
     }
+    const tokenEncrypted = localStorage.getItem("token");
+    const token = decryptData(tokenEncrypted);
+    const decoded = jwtDecode(token);
+    const role = decoded.roles[0];
 
     return (
+        <div>
+
+            <CustomNavbar type="logged"/>
         <div style={{margin: '100px auto', width: '1450px'}}>
-            <MenuSidebar/>
-            <Button onClick={downloadReport} variant="primary" style={{
-                position: 'fixed',
-                top: 70,
-                right: 10,
-                minWidth: "100px"
-            }}>Download Report</Button>
+            {["ROLE_ADMIN", "ROLE_TEACHER"].includes(role) && (
+                <Button onClick={downloadReport} variant="primary" style={{
+                    position: 'fixed',
+                    top: 70,
+                    right: 10,
+                    minWidth: "100px"
+                }}>Download Report</Button>
+            )}
+
             <ListTable type='hw' movies={[]}/>
             <Toast
                 onClose={() => setShowToast(false)}
@@ -71,6 +83,7 @@ const HomeworkPage = () => {
                 <Toast.Body>{toastMessage}</Toast.Body>
             </Toast>
 
+        </div>
         </div>
     );
 }

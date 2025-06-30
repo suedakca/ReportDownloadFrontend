@@ -5,7 +5,7 @@ import AuthForm from "../components/AuthForm";
 const AuthPage = ({pageName}) => {
     return (
         <div>
-            <CustomNavbar/>
+            <CustomNavbar type={null}/>
             <div style={{margin: "400px auto"}}>
                 <h1
                     style={{

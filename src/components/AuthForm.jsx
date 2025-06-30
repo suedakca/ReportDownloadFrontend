@@ -87,10 +87,10 @@ function AuthForm({ urlPath, pageName }) {
                                     onChange={(e) => setRole(e.target.value)}
                                 >
                                     <option value="">Seçiniz</option>
-                                    <option value="USER">Kullanıcı</option>
-                                    <option value="TEACHER">Öğretmen</option>
-                                    <option value="DIRECTOR">Yönetmen</option>
-                                    <option value="ADMIN">Admin</option>
+                                    <option value="ROLE_USER">Kullanıcı</option>
+                                    <option value="ROLE_TEACHER">Öğretmen</option>
+                                    <option value="ROLE_DIRECTOR">Yönetmen</option>
+                                    <option value="ROLE_ADMIN">Admin</option>
                                 </Form.Select>
                             </Col>
                         </Form.Group>

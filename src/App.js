@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import PrivateRoute from "./components/PrivateRoute";
 import {useDispatch, useSelector} from "react-redux";
 import HomeworkPage from "./pages/HomeworkPage";
+import HomePage from "./pages/HomePage";
 
 
 function App() {
@@ -57,7 +58,7 @@ function App() {
                 <Route
                     path="/"
                     element={
-                        token ? <Navigate to="/homework" replace /> : <AuthPage pageName='Login' />
+                        token ? <Navigate to="/home" replace /> : <AuthPage pageName='Login' />
                     }
                 />
                 <Route
@@ -73,6 +74,14 @@ function App() {
                     element={
                         <PrivateRoute>
                             <HomeworkPage />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/home"
+                    element={
+                        <PrivateRoute>
+                            <HomePage />
                         </PrivateRoute>
                     }
                 />

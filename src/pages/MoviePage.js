@@ -4,7 +4,9 @@ import Button from "react-bootstrap/Button";
 import ListTable from "../components/ListTable";
 import {movieApi} from "../api/axios";
 import TitleYearInput from "../components/TitleYearInput";
-import MenuSidebar from "../components/MenuSidebar";
+import CustomNavbar from "../components/Navbar";
+import {decryptData} from "../features/utils/encryptData";
+import {jwtDecode} from "jwt-decode";
 
 const MoviePage = () => {
     const [showToast, setShowToast] = useState(false);
@@ -46,17 +48,25 @@ const MoviePage = () => {
             }
         }
     }
+    const tokenEncrypted = localStorage.getItem("token");
+    const token = decryptData(tokenEncrypted);
+    const decoded = jwtDecode(token);
+    const role = decoded.roles[0];
 
     return (
+        <div>
+          <CustomNavbar type="logged"/>
       <div style={{margin: '100px auto', width: '1050px'}}>
-          <MenuSidebar/>
 
-          <Button onClick={downloadReport} variant="primary" style={{
-              position: 'fixed',
-              top: 70,
-              right: 10,
-              minWidth: "100px"
-          }}>Download Report</Button>
+          {["ROLE_ADMIN", "ROLE_DIRECTOR"].includes(role) && (
+              <Button onClick={downloadReport} variant="primary" style={{
+                  position: 'fixed',
+                  top: 70,
+                  right: 10,
+                  minWidth: "100px"
+              }}>Download Report</Button>
+          )}
+
           <div>
             <TitleYearInput setMovies={setMovies}/>
           </div>
@@ -78,6 +88,7 @@ const MoviePage = () => {
           </Toast>
 
       </div>
+        </div>
     );
 }
 

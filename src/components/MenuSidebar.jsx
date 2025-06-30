@@ -12,7 +12,7 @@ const MenuSidebar = () => {
     const usernameEncrypted = localStorage.getItem("username");
     const username = decryptData(usernameEncrypted);
     const handleLogout = () => {
-        dispatch(logout());
+        dispatch(logout);
         navigate("/");
     };
 
