@@ -2,15 +2,15 @@ import axios from "axios";
 import { decryptData } from "../features/utils/encryptData";
 
 const loginApi = axios.create({
-    baseURL: "http://localhost:8080", // backend URL
+    baseURL: process.env.REACT_APP_API_URL, // backend URL
 });
 
 const movieApi = axios.create({
-    baseURL: "http://localhost:8081"
+    baseURL: process.env.REACT_APP_MOVIE_URL
 });
 
 const homeworkApi = axios.create({
-    baseURL: "http://localhost:8082"
+    baseURL: process.env.REACT_APP_HOMEWORK_URL
 })
 const addAuthInterceptor = (apiInstance) => {
     apiInstance.interceptors.request.use(

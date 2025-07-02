@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {decryptData, encryptData} from "../utils/encryptData";
-
 const localToken = localStorage.getItem("token");
 const localUsername = localStorage.getItem("username");
 
 const initialState = {
-    token: decryptData(localToken) || null,
-    username: decryptData(localUsername) || null
+    token: localToken ? decryptData(localToken) : null,
+    username: localUsername ? decryptData(localUsername) : null
 };
 
 export const authSlice = createSlice({
@@ -25,13 +24,12 @@ export const authSlice = createSlice({
             localStorage.removeItem("token");
             localStorage.removeItem("username");
         },
-        refreshPage : (state, action) => {
-            state.token = action.payload.token;
-            state.username = action.payload.username;
+        refreshPage : (state) => {
+            console.log("State geçerli");
         }
     }
 });
 
 
-export const { setCredentials, logout, refreshPage } = authSlice.actions;
+export const {setCredentials, logout, refreshPage } = authSlice.actions;
 export default authSlice.reducer;

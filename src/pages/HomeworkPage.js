@@ -3,7 +3,6 @@ import Toast from "react-bootstrap/Toast";
 import Button from "react-bootstrap/Button";
 import ListTable from "../components/ListTable";
 import {homeworkApi} from "../api/axios";
-import MenuSidebar from "../components/MenuSidebar";
 import CustomNavbar from "../components/Navbar";
 import {decryptData} from "../features/utils/encryptData";
 import {jwtDecode} from "jwt-decode";

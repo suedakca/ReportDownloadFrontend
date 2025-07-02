@@ -15,7 +15,7 @@ const HomePage = () => {
     console.log("Role: ", role);
     return (
         <div>
-            <CustomNavbar/>
+            <CustomNavbar type="logged"/>
             <h1 style={{
                 position: 'absolute',
                 left: '40vw',
