@@ -14,10 +14,10 @@ const HomeworkPage = () => {
     const handleDownloadResult = (success) => {
         if (success) {
             setToastVariant("success");
-            setToastMessage("İndirme başarılı! 📥");
+            setToastMessage("İndirme başarılı!");
         } else {
             setToastVariant("danger");
-            setToastMessage("İndirme başarısız! 🚫");
+            setToastMessage("İndirme başarısız!");
         }
         setShowToast(true);
     };
